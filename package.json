@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
     "build": "tsc -p tsconfig.json",
-    "start": "node build/index",
+    "start": "node dist/index",
     "heroku-postbuild": "tsc -p tsconfig.json && prisma migrate deploy --preview-feature"
   },
   "devDependencies": {
