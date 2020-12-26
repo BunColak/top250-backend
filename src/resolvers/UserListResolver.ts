@@ -9,7 +9,7 @@ import {
   Root,
 } from "type-graphql";
 import { Context } from "../context";
-import Movie from "../models/Movie";
+import Movie, { ListMovie } from "../models/Movie";
 import UserList, { ToggleMovieArgs } from "../models/UserList";
 
 @Resolver((of) => UserList)
@@ -24,42 +24,44 @@ export default class UserListResolver {
     return ctx.prisma.userList.create({ data: {} });
   }
 
-  @Mutation((returns) => UserList)
+  @Mutation((returns) => Boolean)
   async toggleMovieFromList(
     @Args() { listId, movieId }: ToggleMovieArgs,
     @Ctx() ctx: Context
   ) {
-    const finishedMovies = await ctx.prisma.userList.findFirst({
-      where: { id: listId },
-    }).finishedMovies();
+    const finishedMovies = await ctx.prisma.userList
+      .findFirst({
+        where: { id: listId },
+      })
+      .finishedMovies();
 
-    if (finishedMovies.find(m => m.id === movieId)) {
-        return ctx.prisma.userList.update({
-          where: { id: listId },
-          data: { finishedMovies: { disconnect: { id: movieId } } },
-        });
+    if (finishedMovies.find((m) => m.id === movieId)) {
+      await ctx.prisma.userList.update({
+        where: { id: listId },
+        data: { finishedMovies: { disconnect: { id: movieId } } },
+      });
+      return false;
     } else {
-        return ctx.prisma.userList.update({
-          where: { id: listId },
-          data: { finishedMovies: { connect: { id: movieId } } },
-        });
+      await ctx.prisma.userList.update({
+        where: { id: listId },
+        data: { finishedMovies: { connect: { id: movieId } } },
+      });
+      return true;
     }
   }
 
-  @FieldResolver((returns) => [Movie])
-  async finishedMovies(@Root() userList: UserList, @Ctx() ctx: Context) {
-    return ctx.prisma.userList
-      .findFirst({ where: { id: userList.id } })
-      .finishedMovies();
-  }
+  @FieldResolver((returns) => [ListMovie])
+  async movies(@Root() userList: UserList, @Ctx() ctx: Context) {
+    const finishedMovies = (
+      await ctx.prisma.userList
+        .findFirst({ where: { id: userList.id } })
+        .finishedMovies()
+    ).map((m) => m.id);
+    const movies = await ctx.prisma.movie.findMany();
 
-  @FieldResolver((returns) => [Movie])
-  async unwatchedMovies(@Root() userList: UserList, @Ctx() ctx: Context) {
-    const finishedMovies = await ctx.prisma.userList
-      .findFirst({ where: { id: userList.id } })
-      .finishedMovies();
-    return ctx.prisma.movie.findMany({
-      where: { id: { notIn: finishedMovies.map((i) => i.id) } },
-    });
+    return movies.map((movie) => ({
+      ...movie,
+      watched: finishedMovies.includes(movie.id),
+    }));
   }
 }

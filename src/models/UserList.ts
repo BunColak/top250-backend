@@ -1,16 +1,13 @@
 import { ArgsType, Field, Int, ObjectType } from "type-graphql";
-import Movie from "./Movie";
+import { ListMovie } from "./Movie";
 
 @ObjectType()
-export default class {
+export default class UserList {
   @Field()
   id: string;
 
-  @Field((type) => [Movie])
-  finishedMovies: Movie[];
-
-  @Field((type) => [Movie])
-  unwatchedMovies: Movie[];
+  @Field((type) => [ListMovie])
+  movies: ListMovie[];
 }
 
 @ArgsType()

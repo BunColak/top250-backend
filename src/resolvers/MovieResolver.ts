@@ -6,9 +6,7 @@ import Movie, { GetMovieArgs } from "../models/Movie";
 export default class MovieResolver {
     
     @Query(returns => [Movie])
-    async movies(@Args() {take, skip}: GetMovieArgs, @Ctx() ctx: Context) {
-        console.log(take, skip);
-        
+    async movies(@Args() {take, skip}: GetMovieArgs, @Ctx() ctx: Context) {        
         return ctx.prisma.movie.findMany({take, skip})
     }
 

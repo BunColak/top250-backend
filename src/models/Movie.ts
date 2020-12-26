@@ -19,5 +19,11 @@ export default class Movie {
   imdbId: string;
 }
 
+@ObjectType()
+export class ListMovie extends Movie {
+  @Field()
+  watched: boolean
+}
+
 @ArgsType()
 export class GetMovieArgs extends ListArgs {}
