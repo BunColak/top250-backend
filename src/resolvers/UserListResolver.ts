@@ -44,7 +44,6 @@ export default class UserListResolver {
           data: { finishedMovies: { connect: { id: movieId } } },
         });
     }
-
   }
 
   @FieldResolver((returns) => [Movie])

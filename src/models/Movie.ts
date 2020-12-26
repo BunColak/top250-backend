@@ -14,6 +14,9 @@ export default class Movie {
 
   @Field()
   link: string;
+
+  @Field()
+  imdbId: string;
 }
 
 @ArgsType()

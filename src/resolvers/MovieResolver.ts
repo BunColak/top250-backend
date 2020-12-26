@@ -1,4 +1,4 @@
-import { Arg, Args, Ctx, Query, Resolver } from "type-graphql";
+import { Arg, Args, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql";
 import { Context } from "../context";
 import Movie, { GetMovieArgs } from "../models/Movie";
 
@@ -10,5 +10,10 @@ export default class MovieResolver {
         console.log(take, skip);
         
         return ctx.prisma.movie.findMany({take, skip})
+    }
+
+    @FieldResolver()
+    imdbId(@Root() movie: Movie) {
+        return movie.link.split('/')[5]
     }
 }
