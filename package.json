@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node build/index",
+    "heroku-postbuild": "tsc -p tsconfig.json && prisma migrate deploy --preview-feature"
+  },
+  "devDependencies": {
+    "@prisma/cli": "2.13.1",
+    "@types/node": "^14.14.16",
+    "nodemon": "^2.0.6",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^2.13.1",
+    "apollo-server": "^2.19.1",
+    "class-validator": "^0.12.2",
+    "graphql": "^15.4.0",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1"
+  }
+}
