@@ -1,5 +1,6 @@
 import {
   Arg,
+  Args,
   Ctx,
   FieldResolver,
   Mutation,
@@ -9,7 +10,7 @@ import {
 } from "type-graphql";
 import { Context } from "../context";
 import Movie from "../models/Movie";
-import UserList from "../models/UserList";
+import UserList, { ToggleMovieArgs } from "../models/UserList";
 
 @Resolver((of) => UserList)
 export default class UserListResolver {
@@ -21,6 +22,29 @@ export default class UserListResolver {
   @Mutation((returns) => UserList)
   async createUserList(@Ctx() ctx: Context) {
     return ctx.prisma.userList.create({ data: {} });
+  }
+
+  @Mutation((returns) => UserList)
+  async toggleMovieFromList(
+    @Args() { listId, movieId }: ToggleMovieArgs,
+    @Ctx() ctx: Context
+  ) {
+    const finishedMovies = await ctx.prisma.userList.findFirst({
+      where: { id: listId },
+    }).finishedMovies();
+
+    if (finishedMovies.find(m => m.id === movieId)) {
+        return ctx.prisma.userList.update({
+          where: { id: listId },
+          data: { finishedMovies: { disconnect: { id: movieId } } },
+        });
+    } else {
+        return ctx.prisma.userList.update({
+          where: { id: listId },
+          data: { finishedMovies: { connect: { id: movieId } } },
+        });
+    }
+
   }
 
   @FieldResolver((returns) => [Movie])
