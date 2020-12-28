@@ -17,7 +17,7 @@ steps:
   commands:
   - docker build . -t top250
 
-- name: build
+- name: deploy
   image: docker:latest
   environment:
     DATABASE_URL: 
