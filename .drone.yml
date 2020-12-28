@@ -5,9 +5,9 @@ name: default
 workspace:
   path: /build
 
-environment:
-  DATABASE_URL:
-    from_secret: database_url
+# environment:
+#   DATABASE_URL:
+#     from_secret: database_url
 
 steps:
 - name: deploy
