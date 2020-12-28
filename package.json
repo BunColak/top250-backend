@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
-    "build": "tsc -p tsconfig.json",
-    "start": "node dist/index",
-    "heroku-postbuild": "tsc -p tsconfig.json && prisma migrate deploy --preview-feature"
+    "build": "tsc -p ./tsconfig.json",
+    "start": "node ./dist/index",
+    "heroku-postbuild": "tsc -p ./tsconfig.json && prisma migrate deploy --preview-feature"
   },
   "devDependencies": {
     "@prisma/cli": "2.13.1",
