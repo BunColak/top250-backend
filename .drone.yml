@@ -1,29 +1,24 @@
 kind: pipeline
+type: docker
 name: default
+
+workspace:
+  path: /build
 
 steps:
 - name: deploy
-  image: docker:dind
+  image: docker:latest
   volumes:
-  - name: dockersock
-    path: /var/run
+  - name: docker_sock
+    path: /var/run/docker.sock
   commands:
-  - sleep 5
   - docker build . -t top250
   - docker run -p 9001:4000 -p 9002:4000 --restart=unless-stopped -d top250 
   environment:
     DATABASE_URL: 
       from_secret: database_url 
 
-
-services:
-- name: docker
-  image: docker:dind
-  privileged: true
-  volumes:
-  - name: dockersock
-    path: /var/run
-
 volumes:
 - name: dockersock
-  temp: {}
+  host:
+    path: /var/run/docker.sock
