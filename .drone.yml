@@ -19,12 +19,12 @@ steps:
 
 - name: build
   image: docker:latest
+  environment:
+    DATABASE_URL: 
+      from_secret: database_url 
   commands:
   - docker run -p 9001:4000 -e DATABASE_URL=$DATABASE_URL -p 9002:4000 --restart=unless-stopped --name top250 -d top250 
 
-environment:
-  DATABASE_URL: 
-    from_secret: database_url 
 
 volumes:
 - name: dockersock
