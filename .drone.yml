@@ -13,11 +13,16 @@ steps:
 - name: deploy
   image: docker:latest
   volumes:
-  - name: docker_sock
-    path: /var/run/docker.sock:/var/run/docker.sock
+  - name: dockersock
+    path: /var/run/docker.sock
   commands:
   - docker build . -t top250
   - docker run -p 9001:4000 -p 9002:4000 --restart=unless-stopped -d top250 
   environment:
     DATABASE_URL: 
       from_secret: database_url 
+
+volumes:
+- name: dockersock
+  host:
+    path: /var/run/docker.sock
