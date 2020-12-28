@@ -9,7 +9,7 @@ steps:
 - name: deploy
   image: docker:latest
   volumes:
-  - name: docker_sock
+  - name: dockersock
     path: /var/run/docker.sock
   commands:
   - docker build . -t top250
