@@ -13,5 +13,8 @@ steps:
 - name: deploy
   image: docker:latest
   commands:
-  - docker build . -n top250
+  - docker build . -t top250
   - docker run -p 9001:4000 -p 9002:4000 --restart=unless-stopped -d top250 
+  environment:
+    DATABASE_URL: 
+      from_secret: database_url 
