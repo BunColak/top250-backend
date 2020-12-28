@@ -6,6 +6,15 @@ workspace:
   path: /build
 
 steps:
+- name: clean
+  image: docker:latest
+  volumes:
+  - name: dockersock
+    path: /var/run/docker.sock
+  commands:
+  - docker stop top250 || true
+  - docker rm top250 || true
+
 - name: deploy
   image: docker:latest
   volumes:
