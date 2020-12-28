@@ -10,8 +10,7 @@ steps:
   image: docker:latest
   volumes:
   - name: dockersock
-    host:
-      path: /var/run/docker.sock
+    path: /var/run/docker.sock
   commands:
   - docker stop top250 || true
   - docker rm top250 || true
@@ -20,8 +19,7 @@ steps:
   image: docker:latest
   volumes:
   - name: dockersock
-    host:
-      path: /var/run/docker.sock
+    path: /var/run/docker.sock
   commands:
   - docker build . -t top250
 
@@ -29,8 +27,7 @@ steps:
   image: docker:latest
   volumes:
   - name: dockersock
-    host:
-      path: /var/run/docker.sock
+    path: /var/run/docker.sock
   environment:
     DATABASE_URL: 
       from_secret: database_url 
