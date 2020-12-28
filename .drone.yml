@@ -8,24 +8,23 @@ workspace:
 steps:
 - name: clean
   image: docker:latest
-  volumes:
-  - name: dockersock
-    path: /var/run/docker.sock
   commands:
   - docker stop top250 || true
   - docker rm top250 || true
 
-- name: deploy
+- name: build
   image: docker:latest
-  volumes:
-  - name: dockersock
-    path: /var/run/docker.sock
   commands:
   - docker build . -t top250
-  - docker run -p 9001:4000 -e DATABASE_URL=$DATABASE_URL -p 9002:4000 --restart=unless-stopped -d top250 -n top250
-  environment:
-    DATABASE_URL: 
-      from_secret: database_url 
+
+- name: build
+  image: docker:latest
+  commands:
+  - docker run -p 9001:4000 -e DATABASE_URL=$DATABASE_URL -p 9002:4000 --restart=unless-stopped --name top250 -d top250 
+
+environment:
+  DATABASE_URL: 
+    from_secret: database_url 
 
 volumes:
 - name: dockersock
