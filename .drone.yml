@@ -21,7 +21,7 @@ steps:
   - name: dockersock
     path: /var/run/docker.sock
   commands:
-  - docker build . -t top250
+  - docker build . -e DATABASE_URL=$DATABASE_URL -t top250
 
 - name: deploy
   image: docker:latest
