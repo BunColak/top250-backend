@@ -32,7 +32,7 @@ steps:
     DATABASE_URL: 
       from_secret: database_url 
   commands:
-  - docker run -p 9001:4000 -e DATABASE_URL=$DATABASE_URL --restart=unless-stopped --name top250 -d top250 
+  - docker run -p 9001:4000 -e DATABASE_URL=$DATABASE_URL --restart=unless-stopped --name top250 -d --network web top250 
 
 
 volumes:
