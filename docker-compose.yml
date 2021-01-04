@@ -12,6 +12,7 @@ services:
       - traefik.http.routers.top250.tls=true
       - traefik.http.routers.top250.tls.certresolver=myresolver
       - traefik.docker.network=web
+      - traefik.enable=true
     networks:
       - web
     container_name: top250
