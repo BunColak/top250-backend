@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  top250:
+    build: .
+    ports:
+      - "9001:4000"
+    environment:
+      - DATABASE_URL
+    labels:
+      - traefik.http.routers.top250.rule=Host(`top250.bunserver.xyz`)
+      - traefik.http.routers.top250.tls=true
+      - traefik.http.routers.top250.tls.certresolver=myresolver
+      - traefik.docker.network=web
+    networks:
+      - web
+      
+networks:
+  web:
+    external: true
+      
+
+          
