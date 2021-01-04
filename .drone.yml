@@ -15,14 +15,6 @@ steps:
   - docker stop top250 || true
   - docker rm top250 || true
 
-- name: build
-  image: docker:latest
-  volumes:
-  - name: dockersock
-    path: /var/run/docker.sock
-  commands:
-  - docker build . -t top250
-
 - name: deploy
   image: docker:latest
   volumes:
@@ -32,7 +24,7 @@ steps:
     DATABASE_URL: 
       from_secret: database_url 
   commands:
-  - docker run -p 9001:4000 -e DATABASE_URL=$DATABASE_URL --restart=unless-stopped --name top250 -d --network web top250 
+  - docker-compose up -d 
 
 
 volumes:
