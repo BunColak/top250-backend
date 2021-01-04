@@ -3,8 +3,8 @@ version: '3'
 services:
   top250:
     build: .
-    ports:
-      - "9001:4000"
+    expose:
+      - 4000
     environment:
       - DATABASE_URL
     labels:
